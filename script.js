@@ -1,30 +1,57 @@
-const WHATS="5555996899568"; // 55 + DDD + número
-const SB_URL="https://qgvblbmvgpmrymeoldli.supabase.co"; // endereço do projeto no Supabase (https://xxxx.supabase.co). Vazio = sem bloqueio de horários
-const SB_KEY="sb_publishable_yG34FeVj8ibZgriOzGQAgg_vtV9iocH"; // chave "anon public" do Supabase (nunca use a service_role)
-const H={"apikey":SB_KEY,"Content-Type":"application/json"};
-if(SB_KEY.startsWith("eyJ"))H.Authorization="Bearer "+SB_KEY; // chave antiga (anon) usa Authorization; a nova (sb_publishable_) não
-let ocupados=[];
-const S=[
-{id:1,c:"Combos",n:"Corte + barba",d:"O completo, com toalha quente",m:70,p:80,hot:1},
-{id:2,c:"Cabelo",n:"Corte social",d:"Tesoura ou máquina, na navalha",m:40,p:50},
-{id:3,c:"Cabelo",n:"Degradê",d:"Na régua, com acabamento",m:45,p:60},
-{id:4,c:"Barba",n:"Barba completa",d:"Toalha quente e hidratação",m:30,p:40},
-{id:5,c:"Barba",n:"Pigmentação",d:"Cobre falhas e fios brancos",m:40,p:70},
-{id:6,c:"Barba",n:"Sobrancelha",d:"Na navalha ou pinça",m:10,p:15}];
-const T=[[9,12],[13.5,20]]; // intervalos de atendimento (em horas)
-const hrs=d=>[null,[[13.5,19.5]],T,T,T,T,[[8.5,12],[13.5,17]]][d]||[];
-const fh=h=>{const H=Math.floor(h),M=Math.round((h-H)*60);return H+"h"+(M?String(M).padStart(2,"0"):"")};
+/* Lógica do site. Não precisa editar: tudo vem do config.js */
 const $=s=>document.querySelector(s),pick=new Set(),D=[];
-const dur=m=>m>=60?Math.floor(m/60)+"h"+(m%60?String(m%60).padStart(2,"0"):""):m+" min";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const WHATS=CFG.whats,SB_URL=CFG.supabase.url,SB_KEY=CFG.supabase.key,S=CFG.servicos;
+const H={"apikey":SB_KEY,"Content-Type":"application/json"};
+if(SB_KEY.startsWith("eyJ"))H.Authorization="Bearer "+SB_KEY; // chave antiga usa Authorization; a nova (sb_publishable_) não
+let ocupados=[],cat="Todos",day=0,time=null;
+const hrs=d=>CFG.horarios[d]||[];
+const p2=n=>String(n).padStart(2,"0");
+const fh=h=>{const a=Math.floor(h),m=Math.round((h-a)*60);return a+"h"+(m?p2(m):"")};
+const hh=h=>{const a=Math.floor(h),m=Math.round((h-a)*60);return p2(a)+"h"+(m?p2(m):"")};
+const hm=h=>p2(Math.floor(h))+":"+p2(Math.round((h%1)*60));
+const dur=m=>m>=60?Math.floor(m/60)+"h"+(m%60?p2(m%60):""):m+" min";
 const wa=m=>"https://wa.me/"+WHATS+"?text="+encodeURIComponent(m);
 const fmt=d=>d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
 const sel=()=>S.filter(s=>pick.has(s.id));
 const sum=()=>sel().reduce((a,s)=>({p:a.p+s.p,m:a.m+s.m}),{p:0,m:0});
-let cat="Todos",day=0,time=null;
+
+/* ---- Aplica o config.js na página ---- */
+(()=>{
+  const loc=CFG.cidade+", "+CFG.uf,c=CFG.cores;
+  const NOM=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"],ING=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const set=(s,v)=>{const e=document.querySelector(s);if(e)e.setAttribute("content",v)};
+  document.title=CFG.nome+" — "+loc+" | Agende seu horário";
+  set('meta[name="description"]',CFG.descricao);
+  $(".brand").innerHTML=esc(CFG.marca)+"<small>"+esc(CFG.slogan)+"</small>";
+  $("#h1").textContent=CFG.titulo;$("#sub").textContent=CFG.subtitulo;
+  document.querySelectorAll(".hero img,.rail img").forEach((im,i)=>{if(CFG.fotos[i])im.alt=CFG.fotos[i]});
+  $("#end").innerHTML=esc(CFG.endereco)+"<br>"+esc(loc);
+  const g=[];[1,2,3,4,5,6,0].forEach(d=>{const k=JSON.stringify(hrs(d)),u=g[g.length-1];u&&u.k==k?u.d.push(d):g.push({k,d:[d]})});
+  $("#info").insertAdjacentHTML("beforeend",g.map(x=>{
+    const a=x.d[0],b=x.d[x.d.length-1],n=x.d.length==1?NOM[a]:NOM[a]+(x.d.length==2?" e ":" a ")+NOM[b].toLowerCase(),h=hrs(a);
+    return"<dt>"+n+"</dt><dd>"+(h.length?h.map(([i,f])=>hh(i)+" às "+hh(f)).join("<br>"):"Fechado")+"</dd>"}).join(""));
+  $("#mapa").href=CFG.mapa;
+  const ig=CFG.instagram?"https://www.instagram.com/"+CFG.instagram:"";
+  ig?$("#ig").href=ig:$("#ig").remove();
+  $("#rod").innerHTML="© "+new Date().getFullYear()+" "+esc(CFG.nome)+" · "+esc(loc)+(ig?' · <a target="_blank" rel="noopener" href="'+ig+'">@'+esc(CFG.instagram)+"</a>":"");
+  const st=document.createElement("style");
+  st.textContent=`:root{--gold:${c.claro};--btn-ink:${c.claroTexto}}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--gold:${c.escuro};--btn:${c.escuro}}}:root[data-theme="dark"]{--gold:${c.escuro};--btn:${c.escuro}}`;
+  document.head.append(st);
+  const ic=document.createElement("link");ic.rel="icon";
+  ic.href="data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0c0b09"/><text x="32" y="46" font-size="40" font-weight="700" text-anchor="middle" font-family="sans-serif" fill="${c.escuro}">${esc(CFG.marca[0])}</text></svg>`);
+  document.head.append(ic);
+  const ld=document.createElement("script");ld.type="application/ld+json";
+  ld.textContent=JSON.stringify({"@context":"https://schema.org","@type":"HairSalon",name:CFG.nome,description:CFG.descricao,
+    address:{"@type":"PostalAddress",streetAddress:CFG.endereco,addressLocality:CFG.cidade,addressRegion:CFG.uf,postalCode:CFG.cep,addressCountry:"BR"},
+    hasMap:CFG.mapa,sameAs:ig?[ig]:[],
+    openingHoursSpecification:g.flatMap(x=>hrs(x.d[0]).map(([i,f])=>({"@type":"OpeningHoursSpecification",dayOfWeek:x.d.map(d=>ING[d]),opens:hm(i),closes:hm(f)})))});
+  document.head.append(ld);
+})();
 
 document.querySelectorAll(".wa").forEach(a=>a.href=wa(a.dataset.m));
-function tabs(){$("#tabs").innerHTML=["Todos",...new Set(S.map(s=>s.c))].map(c=>`<button class="chip sel" aria-pressed="${c==cat}">${c}</button>`).join("")}
-function list(){$("#list").innerHTML=S.filter(s=>cat=="Todos"||s.c==cat).map(s=>`<button class="svc" aria-pressed="${pick.has(s.id)}" data-id="${s.id}"><span><b>${s.n}${s.hot?'<span class="tag">Mais pedido</span>':""}</b><small>${s.d} · ${dur(s.m)}</small></span><span class="pr"><i>R$</i>${s.p}</span><span class="tg" aria-hidden="true"></span></button>`).join("")}
+function tabs(){$("#tabs").innerHTML=["Todos",...new Set(S.map(s=>s.c))].map(c=>`<button class="chip sel" aria-pressed="${c==cat}">${esc(c)}</button>`).join("")}
+function list(){$("#list").innerHTML=S.filter(s=>cat=="Todos"||s.c==cat).map(s=>`<button class="svc" aria-pressed="${pick.has(s.id)}" data-id="${s.id}"><span><b>${esc(s.n)}${s.hot?'<span class="tag">Mais pedido</span>':""}</b><small>${esc(s.d)} · ${dur(s.m)}</small></span><span class="pr"><i>R$</i>${s.p}</span><span class="tg" aria-hidden="true"></span></button>`).join("")}
 function bar(){const t=sum(),n=pick.size;$("#tot").textContent=n?"R$ "+t.p:"Escolha acima";$("#meta").textContent=n?n+(n>1?" serviços · ":" serviço · ")+dur(t.m):"Toque em um serviço";$("#go").textContent=n?"Continuar":"Agendar"}
 function status(){const n=new Date(),t=n.getHours()+n.getMinutes()/60,h=hrs(n.getDay()).find(([a,b])=>t>=a&&t<b);$("#st").classList.toggle("off",!h);$("#st span").textContent=h?"Aberto até "+fh(h[1]):"Fechado agora"}
 function slots(d){const m=sum().m,r=[];hrs(d.getDay()).forEach(([a,b])=>{for(let t=a*60;t+m<=b*60;t+=30){const x=new Date(d);x.setHours(0,t,0,0);const f=new Date(x.getTime()+m*6e4);if(x>new Date()&&!ocupados.some(o=>x<o.b&&f>o.a))r.push(x)}});return r}
