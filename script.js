@@ -41,3 +41,12 @@ $("#ok").onclick=()=>{const t=sum(),d=D[day].toLocaleDateString("pt-BR",{weekday
   window.open(wa("Olá! Sou "+$("#nm").value.trim()+". Quero agendar:\n"+sel().map(s=>"• "+s.n).join("\n")+"\n\nDia: "+d+"\nHorário: "+time+"\nTotal: R$ "+t.p+" ("+dur(t.m)+")\n\nPode confirmar?"),"_blank","noopener")};
 if(R.length)$("#rv").innerHTML=R.map(r=>`<blockquote><div class="stars" aria-label="5 estrelas">★★★★★</div><p>${r.t}</p><cite>${r.n}</cite></blockquote>`).join("");
 tabs();list();bar();status();setInterval(status,6e4);
+
+/* Galeria "O espaço": arrastar com o mouse (toque usa a rolagem nativa) */
+(()=>{const r=$(".rail");let down=false,moved=false,x0=0,s0=0,tx=0,raf=0;
+r.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse"||e.button!==0)return;down=true;moved=false;x0=e.clientX;s0=r.scrollLeft});
+r.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-x0;if(!moved&&Math.abs(dx)>4){moved=true;r.classList.add("drag");r.setPointerCapture(e.pointerId)}if(moved){tx=s0-dx;if(!raf)raf=requestAnimationFrame(()=>{r.scrollLeft=tx;raf=0})}});
+const end=()=>{if(!down)return;down=false;moved=false;r.classList.remove("drag")};
+r.addEventListener("pointerup",end);r.addEventListener("pointercancel",end);
+r.addEventListener("dragstart",e=>e.preventDefault());
+})();
