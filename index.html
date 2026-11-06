@@ -3,16 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Barbearia Caumo — Agende seu horário</title>
-<meta name="description" content="Corte, barba e combos com hora marcada na Barbearia Caumo. Escolha o serviço e agende pelo WhatsApp em poucos toques.">
+<title>Barbearia Caumo — Constantina, RS | Agende seu horário</title>
+<meta name="description" content="Barbearia em Constantina, RS: consultoria visagista, cortes modernos e clássicos, barba e acabamento. Escolha o serviço e agende pelo WhatsApp.">
 <meta name="theme-color" content="#0c0b09">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Barbearia Caumo — Imagem masculina">
+<meta property="og:title" content="Barbearia Caumo — Constantina, RS">
 <meta property="og:description" content="Escolha o serviço, o dia e o horário. Confirmação pelo WhatsApp.">
-<meta property="og:image" content="https://SEU-SITE.vercel.app/img/hero.jpg">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://SEU-SITE.vercel.app/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HairSalon","name":"Barbearia Caumo","description":"Barbearia de imagem masculina","address":{"@type":"PostalAddress","streetAddress":"Rua Exemplo, 123","addressLocality":"Sua cidade","addressCountry":"BR"},"openingHours":["Mo-Fr 09:00-20:00","Sa 08:00-18:00"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HairSalon","name":"Barbearia Caumo","description":"Barbearia especializada em consultoria visagista de cadeira, cortes modernos e clássicos, barba, acabamento e cuidados masculinos.","address":{"@type":"PostalAddress","streetAddress":"Av. Pres. Vargas, 511","addressLocality":"Constantina","addressRegion":"RS","postalCode":"99680-000","addressCountry":"BR"},"hasMap":"https://maps.app.goo.gl/mtKi4YGc2hCREo1LA","sameAs":["https://www.instagram.com/caumobarbearia"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Monday","opens":"13:30","closes":"19:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"12:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday"],"opens":"13:30","closes":"20:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"08:30","closes":"12:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"13:30","closes":"17:00"}]}</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,42 +33,51 @@
       <p>Escolha o serviço, o dia e o horário. A confirmação chega pelo WhatsApp.</p>
       <a class="btn" href="#servicos">Ver serviços e preços</a>
     </div>
-    <img src="img/hero.jpg" alt="Barbeiro da Caumo cortando o cabelo de um cliente sorrindo" fetchpriority="high" decoding="async">
+    <img src="img/hero.webp" width="760" height="956" alt="Barbeiro da Caumo cortando o cabelo de um cliente sorrindo" fetchpriority="high" decoding="async">
   </div>
 
   <section id="servicos">
     <h2>Serviços</h2>
     <div class="tabs" id="tabs" role="group" aria-label="Categorias"></div>
     <div id="list"></div>
+    <noscript><p>Para agendar, fale com a gente pelo WhatsApp.</p><a class="btn" href="https://wa.me/5555996899568?text=Ol%C3%A1!%20Quero%20agendar%20um%20hor%C3%A1rio.">Agendar no WhatsApp</a></noscript>
   </section>
 
   <section aria-label="O espaço">
     <h2>O espaço</h2>
     <div class="rail">
-      <img loading="lazy" decoding="async" src="img/barbeiro.jpg" alt="Barbeiro fazendo degradê com vapor ao fundo">
-      <img loading="lazy" decoding="async" src="img/toalha.jpg" alt="Cliente com toalha quente no rosto">
-      <img loading="lazy" decoding="async" src="img/cliente.jpg" alt="Cliente na cadeira da Barbearia Caumo">
-      <img loading="lazy" decoding="async" src="img/card.jpg" alt="Cartão e produtos da Barbearia Caumo">
-      <img loading="lazy" decoding="async" src="img/ferramentas.jpg" alt="Navalha, tesoura e pente sobre madeira">
+      <img loading="lazy" decoding="async" src="img/g1.webp" alt="Barbeiro fazendo degradê com vapor ao fundo">
+      <img loading="lazy" decoding="async" src="img/g2.webp" alt="Cliente com toalha quente no rosto">
+      <img loading="lazy" decoding="async" src="img/g3.webp" alt="Barbeiro de camisa Caumo na cadeira da barbearia">
+      <img loading="lazy" decoding="async" src="img/g4.webp" alt="Cartão e produtos da Barbearia Caumo">
+      <img loading="lazy" decoding="async" src="img/g5.webp" alt="Navalha, tesoura e pente sobre madeira">
     </div>
+  </section>
+
+  <section id="avaliacoes" class="sec">
+    <h2>Avaliações</h2>
+    <div class="rv" id="rv"></div>
+    <p>Já foi atendido na Caumo? Conta pra gente como foi.</p>
+    <a class="btn o" target="_blank" rel="noopener" href="https://maps.app.goo.gl/mtKi4YGc2hCREo1LA">Avaliar no Google</a>
   </section>
 
   <section id="local" class="loc">
     <div>
       <h2>Como chegar</h2>
-      <dl><dt>Endereço</dt><dd>Rua Exemplo, 123 — Centro</dd><dt>Seg a sex</dt><dd>09h às 20h</dd><dt>Sábado</dt><dd>08h às 18h</dd><dt>Domingo</dt><dd>Fechado</dd><dt>Pagamento</dt><dd>Pix, cartão e dinheiro</dd></dl>
+      <dl><dt>Endereço</dt><dd>Av. Pres. Vargas, 511<br>Constantina, RS</dd><dt>Segunda</dt><dd>13h30 às 19h30</dd><dt>Terça a sexta</dt><dd>09h às 12h<br>13h30 às 20h</dd><dt>Sábado</dt><dd>08h30 às 12h<br>13h30 às 17h</dd><dt>Domingo</dt><dd>Fechado</dd></dl>
       <div class="acts">
-        <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Rua+Exemplo+123">Abrir no mapa</a>
+        <a class="btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/mtKi4YGc2hCREo1LA">Abrir no mapa</a>
         <a class="btn o wa" href="#" data-m="Olá! Tenho uma dúvida.">Tirar dúvida</a>
+        <a class="btn o" target="_blank" rel="noopener" href="https://www.instagram.com/caumobarbearia">Instagram</a>
       </div>
     </div>
   </section>
 </main>
-<footer class="w">© 2026 Barbearia Caumo · Imagem masculina</footer>
+<footer class="w">© 2026 Barbearia Caumo · Constantina, RS · <a target="_blank" rel="noopener" href="https://www.instagram.com/caumobarbearia">@caumobarbearia</a></footer>
 
 <div class="bar"><div>
   <div><b id="tot">Escolha acima</b><span id="meta">Toque em um serviço</span></div>
-  <button class="btn" id="go">Continuar</button>
+  <button class="btn" id="go">Agendar</button>
 </div></div>
 
 <dialog id="sh" aria-labelledby="sht"><div class="sh">
@@ -75,6 +89,6 @@
   <button class="btn" id="ok" disabled>Confirmar pelo WhatsApp</button>
 </div></dialog>
 
-<script src="script.js" defer></script>
+<script src="script.js"></script>
 </body>
 </html>
