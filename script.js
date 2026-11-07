@@ -1,4 +1,3 @@
-/* Lógica do site. Não precisa editar: tudo vem do config.js */
 const $=s=>document.querySelector(s),pick=new Set(),D=[];
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const WHATS=CFG.whats,SB_URL=CFG.supabase.url,SB_KEY=CFG.supabase.key,S=CFG.servicos;
